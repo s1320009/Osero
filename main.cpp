@@ -24,10 +24,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1) {
 		return -1; // Initialization failed
 	}
-	
-	//文字を画面に出力
-	DrawString(0, 0, "Hello, DxLib!", GetColor(255, 255, 255));
-	WaitKey(); // Wait for a key press(キーが入力されると画面を閉じる)
+
+	//裏画面に描画する（ダブルバッファリング）
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	//無限ループ（ゲームループ）
+	while (TRUE)
+	{
+		//メッセージ処理をする（マウス操作やキー入力などを受け続ける）
+		if (ProcessMessage() != 0)
+		{
+			break; // 無限ループから出る(ゲーム終了)
+		}
+
+		//画面を消去する（１ループずつ書き換える）
+		if (ClearDrawScreen() != 0)
+		{
+			break; // 無限ループから出る(ゲーム終了)
+		}
+
+		//ここに全てのゲームの動作が入る
+		{
+
+			//文字を画面に出力
+			DrawString(0, 0, "Helllo DxLib", GetColor(255, 255, 255));
+		}
+	}
+
 	DxLib_End(); // Clean up and exit
 	return 0;  //ソフト終了
 }
