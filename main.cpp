@@ -1,12 +1,6 @@
 #include "DxLib.h"
-
-//マクロ定義　//マジックナンバー(急に出てくる数字)を定義する
-#define GameWidth 1280				// ゲームの横幅
-#define GameHeight 720				// ゲームの縦幅  //ctrl + dで同じ行を複製する
-#define GameColor   32				// ゲームの色
-#define GameTitle "Title"			//画面タイトル
-#define GameVSync TRUE				//V-Syncを使うならTRUE
-#define GameIcon   555				//画面アイコン
+#include "fps.h"
+#include "game.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -19,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetWaitVSyncFlag(GameVSync);					//垂直同期を設定
 	SetAlwaysRunFlag(TRUE);							//ウィンドウがアクティブでないときも処理を続行する);
 	SetWindowIconID(GameIcon);						//アイコン					
+	SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
 
 	// Initialize the library
 	if (DxLib_Init() == -1) {
@@ -27,6 +22,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//裏画面に描画する（ダブルバッファリング）
 	SetDrawScreen(DX_SCREEN_BACK);
+
+	//FPS初期化
+	FPSInit();
+
+	//最初のシーンはタイトルから
+	NowGameScene = TitleScene;
 
 	//無限ループ（ゲームループ）
 	while (TRUE)
@@ -45,12 +46,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		//ここに全てのゲームの動作が入る
 		{
+			FPSCheck(); //FPS計測
 
-			//文字を画面に出力
-			DrawString(0, 0, "Helllo DxLib", GetColor(255, 255, 255));
+			//シーン切り替え
+			switch (NowGameScene)
+			{
+			case TitleScene:
+				TitleCtrl();
+				break;
+			case PlayScene:
+				PlayCtrl();
+				break;
+			case ResultScene:
+				ResultCtrl();
+				break;
+			default:
+				break;
+			}
+
+			FPSDraw();  //FPS描画
+			FPSWait();  //FPS待機
 		}
+
+		//裏画面の内容を表画面に反映させる
+		ScreenFlip();
 	}
 
 	DxLib_End(); // Clean up and exit
+
 	return 0;  //ソフト終了
 }
