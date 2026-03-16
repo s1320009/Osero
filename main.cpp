@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "fps.h"
 #include "game.h"
+#include "key.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -26,9 +27,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//FPS初期化
 	FPSInit();
 
+	//キーボード初期化
+	KeyInit();
+
+	//タイトルシーンを初期化
+	TitleInit();
+
 	//最初のシーンはタイトルから
 	NowGameScene = TitleScene;
 
+	//次のシーンもタイトルから
+	ChangeGameScene = TitleScene;
 	//無限ループ（ゲームループ）
 	while (TRUE)
 	{
@@ -46,22 +55,48 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		//ここに全てのゲームの動作が入る
 		{
-			FPSCheck(); //FPS計測
-
-			//シーン切り替え
-			switch (NowGameScene)
+			FPSCheck();		//FPS計測
+			KeyUpdate();	//キーボード更新
+			
+			//次のシーンを初期化
+			if(NowGameScene != ChangeGameScene)	//シーンが切り替わったとき
 			{
-			case TitleScene:
-				TitleCtrl();
-				break;
-			case PlayScene:
-				PlayCtrl();
-				break;
-			case ResultScene:
-				ResultCtrl();
-				break;
-			default:
-				break;
+				//シーン切り替え
+				switch (ChangeGameScene)
+				{
+				case TitleScene:
+					TitleInit();
+					break;
+				case PlayScene:
+					PlayInit();
+					break;
+				case ResultScene:
+					ResultInit();
+					break;
+				default:
+					break;
+				}
+
+				//シーン切り替え後のシーンを現在のシーンにする
+				NowGameScene = ChangeGameScene;
+			}
+			else
+			{
+				//シーン切り替え
+				switch (NowGameScene)
+				{
+				case TitleScene:
+					TitleCtrl();
+					break;
+				case PlayScene:
+					PlayCtrl();
+					break;
+				case ResultScene:
+					ResultCtrl();
+					break;
+				default:
+					break;
+				}
 			}
 
 			FPSDraw();  //FPS描画

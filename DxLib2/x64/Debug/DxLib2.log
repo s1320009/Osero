@@ -1,0 +1,15 @@
+﻿  main.cpp
+C:\DxLibproject\DxLib2\main.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\DxLibproject\DxLib2\fps.h(1,1): warning C4828: オフセット 0x43e から始まる、現在のソースの文字セット (コードページ 932) では使用できない文字がファイルに含まれています。
+  (ソース ファイル 'main.cpp' をコンパイルしています)
+  
+C:\DxLibproject\DxLib2\fps.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'main.cpp' をコンパイルしています)
+  
+C:\DxLibproject\DxLib2\game.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'main.cpp' をコンパイルしています)
+  
+C:\DxLibproject\DxLib2\key.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'main.cpp' をコンパイルしています)
+  
+  DxLib2.vcxproj -> C:\DxLibproject\DxLib2\x64\Debug\DxLib2.exe

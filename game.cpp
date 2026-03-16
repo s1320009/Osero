@@ -1,10 +1,12 @@
 //ヘッダファイル読み込み
 #include "game.h"
+#include "key.h"
 
 //グローバル変数の定義
 
 //ゲームシーン
 enum GameScene NowGameScene; //現在のゲームシーン
+enum GameScene ChangeGameScene; //切り替えるゲームシーン
 
 //ゲームシーンの名前
 char GameSceneName[GameSceneCount][GameSceneNameMax]
@@ -13,6 +15,9 @@ char GameSceneName[GameSceneCount][GameSceneNameMax]
 	"プレイ画面",
 	"リザルト画面"
 };
+
+//シーン切り替え後のフレーム数を管理
+int GameSceneFrameCount[GameSceneCount];
 
 //関数
 
@@ -25,8 +30,15 @@ extern VOID TitleInit(VOID)
 		DrawFormatString(
 			GameWidth - 200, 0,
 			GetColor(255, 255, 255),
-			"%s%s", GameSceneName[NowGameScene], "Init");
+			"%s%s", GameSceneName[ChangeGameScene], "Init");
+
+		//適切なシーンの初期化ができているかテスト
+		//ScreenFlip();	//あえて裏画面を描画
+		//WaitTimer(2000);	//2秒待つ
 	}	
+
+	//シーンを切り替えたフレーム数を初期化
+	GameSceneFrameCount[ChangeGameScene] = 0;
 
 	return;
 }
@@ -40,16 +52,15 @@ extern VOID TitleCtrl(VOID)
 //タイトル処理
 extern VOID TitleProc(VOID)
 {
+	//シーン切り替え後のフレーム数をカウントアップ
+	GameSceneFrameCount[NowGameScene]++;
+	
 	//シーン切り替え
-	if (CheckHitKey(KEY_INPUT_SPACE) == TRUE)
+	if (KeyDown(KEY_INPUT_SPACE) == TRUE								//スペースキーが押され,
+		&& GameSceneFrameCount[NowGameScene] >= GameSceneChangeFrame)	//かつ、切り替え可能なフレーム数を超えたら
 	{
-		//スペースキーが押されたらプレイシーンに切り替える
-
-		//シーン初期化
-		PlayInit();
-
 		//シーン切り替え
-		NowGameScene = PlayScene;
+		ChangeGameScene = PlayScene;
 
 		//すぐに切り替える
 		return;
@@ -62,6 +73,9 @@ extern VOID TitleDraw(VOID)
 {
 	if (GameDebug == TRUE)
 	{
+		//適当に描画
+		DrawBox(0, 0, GameWidth, GameHeight, GetColor(255, 0, 255), TRUE);
+
 		//シーン名表示
 		DrawFormatString(
 			GameWidth - 200, 0,
@@ -81,8 +95,15 @@ extern VOID PlayInit(VOID)
 		DrawFormatString(
 			GameWidth - 200, 0,
 			GetColor(255, 255, 255),
-			"%s%s", GameSceneName[NowGameScene], "Init");
+			"%s%s", GameSceneName[ChangeGameScene], "Init");
+
+		//適切なシーンの初期化ができているかテスト
+ 		//ScreenFlip();	//あえて裏画面を描画
+		//WaitTimer(2000);	//2秒待つ
 	}
+
+	//シーンを切り替えたフレーム数を初期化
+	GameSceneFrameCount[ChangeGameScene] = 0;
 
 	return;
 }
@@ -97,16 +118,15 @@ extern VOID PlayCtrl(VOID)
 //プレイ処理
 extern VOID PlayProc(VOID)
 {
+	//シーン切り替え後のフレーム数をカウントアップ
+	GameSceneFrameCount[NowGameScene]++;
+
 	//シーン切り替え
-	if (CheckHitKey(KEY_INPUT_SPACE) == TRUE)
+	if (KeyDown(KEY_INPUT_SPACE) == TRUE								//スペースキーが押され,
+		&& GameSceneFrameCount[NowGameScene] >= GameSceneChangeFrame)	//かつ、切り替え可能なフレーム数を超えたら
 	{
-		//スペースキーが押されたらプレイシーンに切り替える
-
-		//シーン初期化
-		ResultInit();
-
 		//シーン切り替え
-		NowGameScene = ResultScene;
+		ChangeGameScene = ResultScene;
 
 		//すぐに切り替える
 		return;
@@ -119,6 +139,9 @@ extern VOID PlayDraw(VOID)
 {
 	if (GameDebug == TRUE)
 	{
+		//適当に描画
+		DrawBox(0, 0, GameWidth, GameHeight, GetColor(0, 255, 255), TRUE);
+
 		//シーン名表示
 		DrawFormatString(
 			GameWidth - 200, 0,
@@ -138,8 +161,15 @@ extern VOID ResultInit(VOID)
 		DrawFormatString(
 			GameWidth - 200, 0,
 			GetColor(255, 255, 255),
-			"%s%s", GameSceneName[NowGameScene], "Init");
+			"%s%s", GameSceneName[ChangeGameScene], "Init");
+
+		//適切なシーンの初期化ができているかテスト
+		//ScreenFlip();	//あえて裏画面を描画
+		//WaitTimer(2000);	//2秒待つ
 	}
+
+	//シーンを切り替えたフレーム数を初期化
+	GameSceneFrameCount[ChangeGameScene] = 0;
 
 	return;
 }
@@ -154,16 +184,15 @@ extern VOID ResultCtrl(VOID)
 //リザルト処理
 extern VOID ResultProc(VOID)
 {
+	//シーン切り替え後のフレーム数をカウントアップ
+	GameSceneFrameCount[NowGameScene]++;
+
 	//シーン切り替え
-	if (CheckHitKey(KEY_INPUT_SPACE) == TRUE)
+	if (KeyDown(KEY_INPUT_SPACE) == TRUE								//スペースキーが押され,
+		&& GameSceneFrameCount[NowGameScene] >= GameSceneChangeFrame)	//かつ、切り替え可能なフレーム数を超えたら
 	{
-		//スペースキーが押されたらプレイシーンに切り替える
-
-		//シーン初期化
-		TitleInit();
-
 		//シーン切り替え
-		NowGameScene = TitleScene;
+		ChangeGameScene = TitleScene;
 
 		//すぐに切り替える
 		return;
@@ -176,6 +205,9 @@ extern VOID ResultDraw(VOID)
 {
 	if (GameDebug == TRUE)
 	{
+		//適当に描画
+		DrawBox(0, 0, GameWidth, GameHeight, GetColor(255, 255, 0), TRUE);
+
 		//シーン名表示
 		DrawFormatString(
 			GameWidth - 200, 0,
