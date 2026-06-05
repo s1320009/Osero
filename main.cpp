@@ -2,6 +2,7 @@
 #include "fps.h"
 #include "game.h"
 #include "key.h"
+#include "mouse.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -30,6 +31,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//キーボード初期化
 	KeyInit();
 
+	//マウス初期化
+	MouseInit();
+
 	//タイトルシーンを初期化
 	TitleInit();
 
@@ -57,6 +61,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{
 			FPSCheck();		//FPS計測
 			KeyUpdate();	//キーボード更新
+			MouseUpdate();	//マウス更新
 			
 			//次のシーンを初期化
 			if(NowGameScene != ChangeGameScene)	//シーンが切り替わったとき

@@ -1,5 +1,23 @@
+# Visual Studio の作業用・一時フォルダ
 .vs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# ビルド生成物
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.aps
+*.log
+*.tlog
+*.lastbuildstate
+*.idb
+
+# Visual Studio ユーザー設定
+*.vcxproj.user
+*.suo
 *.db
 *.opendb
-bin/
-obj/

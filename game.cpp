@@ -1,6 +1,7 @@
 //ヘッダファイル読み込み
 #include "game.h"
 #include "key.h"
+#include "mouse.h"
 
 //グローバル変数の定義
 
@@ -56,7 +57,7 @@ extern VOID TitleProc(VOID)
 	GameSceneFrameCount[NowGameScene]++;
 	
 	//シーン切り替え
-	if (KeyDown(KEY_INPUT_SPACE) == TRUE								//スペースキーが押され,
+	if (MouseDown(MOUSE_INPUT_LEFT) == TRUE								//マウスの左ボタンが押され,
 		&& GameSceneFrameCount[NowGameScene] >= GameSceneChangeFrame)	//かつ、切り替え可能なフレーム数を超えたら
 	{
 		//シーン切り替え
@@ -82,6 +83,26 @@ extern VOID TitleDraw(VOID)
 			GetColor(255, 255, 255),
 			"%s%s", GameSceneName[NowGameScene], "描画中");
 	}
+
+	//マウス機能テスト
+	DrawCircle(
+		GetOldPointMouse().x, GetOldPointMouse().y,			//以前のマウスの位置
+		20,													//円の大きさ
+		GetColor(0, 255, 0),								//円の色
+		TRUE);												//円を塗りつぶす？
+
+	static int wheelCircleRadius = 20;
+	int wheelDelta = abs(GetWheelMouse());
+	if (wheelDelta > 0)
+	{
+		wheelCircleRadius = wheelDelta * 10;
+	}
+
+	DrawCircle(
+		GetPointMouse().x, GetPointMouse().y,				//現在のマウスの位置
+		wheelCircleRadius,									//ホイールで更新した半径を保持
+		GetColor(255, 0, 0),								//円の色
+		TRUE);												//円を塗りつぶす？
 
 	return;
 }
@@ -122,7 +143,7 @@ extern VOID PlayProc(VOID)
 	GameSceneFrameCount[NowGameScene]++;
 
 	//シーン切り替え
-	if (KeyDown(KEY_INPUT_SPACE) == TRUE								//スペースキーが押され,
+	if (MouseDown(MOUSE_INPUT_LEFT) == TRUE								//マウスの左ボタンが押され,
 		&& GameSceneFrameCount[NowGameScene] >= GameSceneChangeFrame)	//かつ、切り替え可能なフレーム数を超えたら
 	{
 		//シーン切り替え
@@ -188,7 +209,7 @@ extern VOID ResultProc(VOID)
 	GameSceneFrameCount[NowGameScene]++;
 
 	//シーン切り替え
-	if (KeyDown(KEY_INPUT_SPACE) == TRUE								//スペースキーが押され,
+	if (MouseDown(MOUSE_INPUT_LEFT) == TRUE								//マウスの左ボタンが押され,
 		&& GameSceneFrameCount[NowGameScene] >= GameSceneChangeFrame)	//かつ、切り替え可能なフレーム数を超えたら
 	{
 		//シーン切り替え
